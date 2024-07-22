@@ -2,6 +2,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LandingPage from './pages/landing'
 import LoginPage from './pages/user/pages/Login'
+import SignUpPage from './pages/user/pages/SignUpPage'
 
 
 
@@ -14,6 +15,10 @@ function App() {
     {
       path: "login",
       element: <LoginPage/>
+    },
+    {
+      path: "signup",
+      element: <SignUpPage/>
     }
   ])
 
