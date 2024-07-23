@@ -26,13 +26,13 @@ const LoginPage = () => {
 
 
   return (
-    <div className='w-full h-screen'>
-      <div className='hidden md:flex flex-col gap-y-4 w-1/4 min-h-screen bg-black items-center justify-between '>
+    <div className=' flex w-full h-screen'>
+      <div className='hidden md:flex flex-col gap-y-4 w-1/3 min-h-screen bg-black items-center justify-center '>
         <Logo type="login" />
         <span className='text-xl font-semibold text-white'>Welcome, back</span>
       </div>
 
-      <div className='flex w-full md:w-2/3 h-full bg-white tems-center px-10 md:px-20 lg:px-40'>
+      <div className='flex w-full md:w-2/3 h-full bg-white items-center px-10 md:px-20 lg:px-40'>
         <div className='w-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 '>
           <div className='block mb-10 md:hidden'>
             <Logo />
