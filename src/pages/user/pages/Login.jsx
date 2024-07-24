@@ -22,6 +22,10 @@ const LoginPage = () => {
     })
   }
 
+  const googleLogin = async () => {};
+
+  const handleSubmit = async () => {};
+
   if (user.token) window.location.replace("/");
 
 
@@ -33,7 +37,7 @@ const LoginPage = () => {
       </div>
 
       <div className='flex w-full md:w-2/3 h-full bg-white items-center px-10 md:px-20 lg:px-40'>
-        <div className='w-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 '>
+        <div className='h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 '>
           <div className='block mb-10 md:hidden'>
             <Logo />
           </div>
@@ -45,15 +49,15 @@ const LoginPage = () => {
               label="Sign in with Google"
               icon={<FcGoogle className='' />}
               styles="w-full flex flew-row-reverse gap-4 bg-white dark:bg-transparent text-black dark:text-white px-5 py-2.5 rounded-full border border-gray-300"
-              onClick={() => { }} />
+              onClick={() => {googleLogin() }} />
             <Divider
               label="or sign in with email " />
 
-            <form className='mt-8 space-y-6 '>
+            <form className='mt-8 space-y-6 ' onSubmit={handleSubmit}>
               <div className='flex flex-col shadow-sm space-y-px rounded-md gap-5'>
                 <Inputbox
                   name="email"
-                  type="texts"
+                  type="text"
                   label="Email address"
                   placeholder="you@example.com"
                   value={data?.email}
