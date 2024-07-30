@@ -2,7 +2,7 @@ import { FollowerModel } from "../models/followers.js"
 import { UserModel } from "../models/user.js";
 
 
-export const stats = async (req, res, next) => {
+export const statsFollower = async (req, res, next) => {
     try {
         const { query } = req.query;
     const { userId } = req.body.user;

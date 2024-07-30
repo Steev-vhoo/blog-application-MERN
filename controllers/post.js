@@ -1,8 +1,9 @@
 import { PostModel } from "../models/post.js";
 import { UserModel } from "../models/user.js";
+import { ViewModel } from "../models/view.js";
 
 
-export const stats = async (req, res, next) => {
+export const statsPost = async (req, res, next) => {
     try {
         const { query } = req.query;
         const { userId } = req.body.user;
@@ -13,12 +14,12 @@ export const stats = async (req, res, next) => {
         const startDate = new Date();
         startDate.setDate(currentDate.getDate() - numofDays);
 
-        const totalPosts = await Posts.find({
+        const totalPosts = await PostModel.find({
             user: userId,
             createdAt: { $gte: startDate, $lte: currentDate },
         }).countDocuments();
 
-        const last5Posts = await Posts.find({ user: userId })
+        const last5Posts = await PostModel.find({ user: userId })
             .limit(5)
             .sort({ _id: -1 });
 
@@ -37,7 +38,7 @@ export const getPostContent = async (req, res, next) => {
     try {
         const { userId } = req.body.user;
 
-        let queryResult = Posts.find({ user: userId }).sort({
+        let queryResult = PostModel.find({ user: userId }).sort({
             _id: -1,
         });
 
@@ -47,7 +48,7 @@ export const getPostContent = async (req, res, next) => {
         const skip = (page - 1) * limit;
 
         //records count
-        const totalPost = await Posts.countDocuments({ user: userId });
+        const totalPost = await PostModel.countDocuments({ user: userId });
         const numOfPage = Math.ceil(totalPost / limit);
 
         queryResult = queryResult.skip(skip).limit(limit);
@@ -79,7 +80,7 @@ export const createPost = async (req, res, next) => {
             );
         }
 
-        const post = await Posts.create({
+        const post = await PostModel.create({
             user: userId,
             desc,
             img,
@@ -114,11 +115,11 @@ export const commentPost = async (req, res, next) => {
         await newComment.save();
 
         //updating the post with the comments id
-        const post = await Posts.findById(id);
+        const post = await PostModel.findById(id);
 
-        post.comments.push(newComment._id);
+        post.comment.push(newComment._id);
 
-        await Posts.findByIdAndUpdate(id, post, {
+        await PostModel.findByIdAndUpdate(id, post, {
             new: true,
         });
 
@@ -138,7 +139,7 @@ export const updatePost = async (req, res, next) => {
         const { id } = req.params;
         const { status } = req.body;
 
-        const post = await Posts.findByIdAndUpdate(id, { status }, { new: true });
+        const post = await PostModel.findByIdAndUpdate(id, { status }, { new: true });
 
         res.status(200).json({
             sucess: true,
@@ -200,7 +201,7 @@ export const getPosts = async (req, res, next) => {
 
 export const getPopularContents = async (req, res, next) => {
     try {
-        const posts = await Posts.aggregate([
+        const posts = await PostModel.aggregate([
             {
                 $match: {
                     status: true,
@@ -224,7 +225,7 @@ export const getPopularContents = async (req, res, next) => {
             },
         ]);
 
-        const writers = await Users.aggregate([
+        const writers = await UserModel.aggregate([
             {
                 $match: {
                     accountType: { $ne: "User" },
@@ -260,19 +261,19 @@ export const getPost = async (req, res, next) => {
     try {
         const { postId } = req.params;
 
-        const post = await Posts.findById(postId).populate({
+        const post = await PostModel.findById(postId).populate({
             path: "user",
             select: "name image -password",
         });
 
-        const newView = await Views.create({
+        const newView = await ViewModel.create({
             user: post?.user,
             post: postId,
         });
 
         post.views.push(newView?._id);
 
-        await Posts.findByIdAndUpdate(postId, post);
+        await PostModel.findByIdAndUpdate(postId, post);
 
         res.status(200).json({
             success: true,
@@ -290,7 +291,7 @@ export const deletePost = async (req, res, next) => {
         const { userId } = req.body.user;
         const { id } = req.params;
 
-        await Posts.findOneAndDelete({ _id: id, user: userId });
+        await PostModel.findOneAndDelete({ _id: id, user: userId });
 
         res.status(200).json({
             success: true,

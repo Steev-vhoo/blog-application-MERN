@@ -41,7 +41,7 @@ export const getComments = async (req, res, next) => {
     try {
         const { postId } = req.params;
 
-        const postComments = await Comments.find({ post: postId })
+        const postComments = await CommentModel.find({ post: postId })
             .populate({
                 path: "user",
                 select: "name image -password",
@@ -65,7 +65,7 @@ export const deleteComment = async (req, res, next) => {
 
         await CommentModel.findByIdAndDelete(id);
 
-        //removing commetn id from post
+        //removing comment id from post
         const result = await PostModel.updateOne(
             { _id: postId },
             { $pull: { comments: id } }

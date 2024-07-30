@@ -1,6 +1,6 @@
 import { ViewModel } from "../models/view.js";
 
-export const stats = async (req, res, next) => {
+export const statsView = async (req, res, next) => {
     try {
         const { query } = req.query;
         const { userId } = req.body.user;

@@ -1,5 +1,5 @@
 import { UserModel } from "../models/user.js";
-import { registerValidator } from "../models/user.js";
+import { registerValidator, loginValidator } from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
@@ -118,7 +118,7 @@ export const login = async (req, res, next) => {
         // Create a token
         const token = jwt.sign(
             { id: user.id },
-            process.env.JWT_PRIVATE_KEY,
+            process.env.JWT_SECRET_KEY,
             { expiresIn: '1h' }
         );
         // Return response
@@ -130,13 +130,7 @@ export const login = async (req, res, next) => {
         next(error)
     }
 }
-export const registe = async (req, res, next) => {
-    try {
 
-    } catch (error) {
-        next(error)
-    }
-}
 export const logout = async (req, res, next) => {
     try {
         // Destroy user session
